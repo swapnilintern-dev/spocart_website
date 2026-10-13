@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulk catalog — SPOCART Wholesale</title>
+  <meta name="description" content="Browse SPOCART's wholesale sports catalog. Slab pricing for shops, schools and academies, GST invoice on every order, MOQ from 10 pcs." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="catalog">
+
+<div id="siteHeader"></div>
+
+<main class="catalog">
+  <!-- ===================== PAGE HEAD ===================== -->
+  <div class="catalog__head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="catalog.html">Catalog</a> / <span id="crumbCurrent">All products</span></nav>
+      <div class="catalog__title">
+        <div>
+          <h1 id="pageTitle">Bulk catalog</h1>
+          <div class="catalog__meta">
+            <span class="tag tag--green" id="stockPill">0 pcs ready stock</span>
+            <span id="showingText">Showing 0 of 0 products</span>
+          </div>
+        </div>
+        <div class="catalog__tools">
+          <label class="select">
+            <span>Sort:</span>
+            <select id="sortSelect" aria-label="Sort products">
+              <option value="saving">Biggest bulk saving</option>
+              <option value="popular">Most ordered</option>
+              <option value="rating">Top rated</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+            </select>
+            <svg class="ic"><use href="#i-chevron"/></svg>
+          </label>
+          <label class="switch switch--pill"><input type="checkbox" id="groupByBrand" checked /><i></i><span>Group by brand</span></label>
+          <div class="view-toggle" role="group" aria-label="View">
+            <button class="icon-btn is-active" data-view="grid" aria-label="Grid view"><svg class="ic"><use href="#i-grid"/></svg></button>
+            <button class="icon-btn" data-view="list" aria-label="List view"><svg class="ic"><use href="#i-list"/></svg></button>
+          </div>
+          <button class="btn btn--outline btn--sm catalog__filter-btn" id="filterToggle"><svg class="ic"><use href="#i-menu"/></svg> Filters</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container catalog__body">
+    <!-- ===================== FILTERS ===================== -->
+    <aside class="filters" id="filters">
+      <div class="filter-card">
+        <h4>Buyer type</h4>
+        <div class="buyer-list" id="buyerList"></div>
+        <p class="filter-note">Prices update by slab for your type.</p>
+      </div>
+
+      <div class="filter-card">
+        <button class="filter-card__head" data-collapse="catList" aria-expanded="true"><h4>Category</h4><svg class="ic"><use href="#i-chevron"/></svg></button>
+        <div class="check-list" id="catList"></div>
+      </div>
+
+      <div class="filter-card">
+        <h4>Quantity slab</h4>
+        <div class="chips" id="slabChips">
+          <button class="chip-btn" data-slab="10">10+</button>
+          <button class="chip-btn is-active" data-slab="100">100+</button>
+          <button class="chip-btn" data-slab="500">500+</button>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <button class="filter-card__head" data-collapse="brandList" aria-expanded="true"><h4>Brand</h4><svg class="ic"><use href="#i-chevron"/></svg></button>
+        <div id="brandList">
+          <label class="orders__search filter-search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="brandSearch" placeholder="Find a brand…" autocomplete="off" /></label>
+          <div class="check-list check-list--scroll" id="brandChecks"></div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <h4>Availability</h4>
+        <label class="switch"><span>In stock only</span><input type="checkbox" id="inStockOnly" checked /><i></i></label>
+        <label class="switch"><span>GST invoice</span><input type="checkbox" id="gstOnly" checked /><i></i></label>
+        <button class="link filter-clear" id="clearFilters">Clear all filters</button>
+      </div>
+
+      <div class="tender-card">
+        <svg class="ic"><use href="#i-quote"/></svg>
+        <strong>Buying for a school tender?</strong>
+        <p>Upload your BOQ, get sealed quote in 2 hrs.</p>
+        <button class="btn btn--red btn--block" id="uploadBoqBtn">Upload BOQ</button>
+        <input type="file" id="boqFile" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx" hidden />
+      </div>
+    </aside>
+
+    <!-- ===================== RESULTS ===================== -->
+    <section class="catalog__main">
+      <div class="slab-banner" id="slabBanner">
+        <span class="slab-banner__icon"><svg class="ic"><use href="#i-percent"/></svg></span>
+        <p id="slabText"></p>
+        <button class="btn btn--dark btn--sm" id="viewSlabTable">View slab table</button>
+      </div>
+
+      <div class="active-filters" id="activeFilters"></div>
+      <nav class="brand-jump" id="brandJump" aria-label="Jump to brand"></nav>
+      <div class="product-grid product-grid--3" id="productGrid"></div>
+      <div class="brand-groups" id="brandGroups"></div>
+      <p class="empty" id="productEmpty" hidden>No products match these filters. <button class="link" id="emptyClear">Clear all filters</button></p>
+      <nav class="pagination" id="pagination" aria-label="Pagination"></nav>
+
+      <div class="cartbar" id="cartbar">
+        <span class="cartbar__icon"><svg class="ic"><use href="#i-cart"/></svg><em class="badge" id="cartbarBadge">0</em></span>
+        <div class="cartbar__summary">
+          <strong id="cartbarItems">Your cart is empty</strong>
+          <span id="cartbarSave">Add bulk items to see slab savings</span>
+        </div>
+        <div class="cartbar__total">
+          <span>Bulk total (excl. GST)</span>
+          <b id="cartbarTotal">₹0</b>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="cartbarQuote">Get quote</button>
+        <button class="btn btn--red btn--sm" id="cartbarCheckout">Checkout <svg class="ic"><use href="#i-arrow"/></svg></button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+
+<!-- ===================== SLAB TABLE MODAL ===================== -->
+<div class="modal" id="slabModal" role="dialog" aria-modal="true" aria-labelledby="slabModalTitle" hidden>
+  <div class="modal__card">
+    <div class="drawer__head">
+      <h3 id="slabModalTitle">Slab price table</h3>
+      <button class="icon-btn" id="closeSlabModal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal__body">
+      <p class="muted" id="slabModalNote"></p>
+      <table class="slab-table" id="slabTable"></table>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/catalog.js"></script>
+</body>
+</html>

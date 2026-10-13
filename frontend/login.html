@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — SPOCART Wholesale</title>
+  <meta name="description" content="Sign in to SPOCART Wholesale with your mobile number and OTP." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="login">
+<div id="siteHeader"></div>
+
+<main class="auth">
+  <div class="container auth__grid">
+    <aside class="auth__side">
+      <span class="pill pill--red">Wholesale account</span>
+      <h1>Welcome back.</h1>
+      <p>Sign in with your mobile number — no passwords. Your cart, quotes and GST invoices are waiting.</p>
+      <ul class="auth__perks">
+        <li><svg class="ic"><use href="#i-layers"/></svg> Slab pricing applied automatically</li>
+        <li><svg class="ic"><use href="#i-receipt"/></svg> GST invoice on every order</li>
+        <li><svg class="ic"><use href="#i-truck"/></svg> Track dispatches live</li>
+      </ul>
+    </aside>
+
+    <section class="auth__card">
+      <!-- Step 1: mobile -->
+      <form class="auth__step" id="stepMobile" novalidate>
+        <h2>Login with OTP</h2>
+        <p class="auth__sub">Enter the mobile number registered with SPOCART.</p>
+        <label class="field">
+          <span>Mobile number</span>
+          <div class="phone-input"><b>+91</b><input type="tel" id="mobile" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national" required /></div>
+        </label>
+        <p class="field-error" id="mobileError" hidden></p>
+        <button type="submit" class="btn btn--red btn--block" id="sendOtp">Send OTP <svg class="ic"><use href="#i-arrow"/></svg></button>
+        <button type="button" class="link link--muted auth__demo" id="useDemo">Try the demo account</button>
+      </form>
+
+      <!-- Step 2: OTP -->
+      <form class="auth__step" id="stepOtp" hidden novalidate>
+        <button type="button" class="auth__back" id="changeMobile"><svg class="ic"><use href="#i-chevron-left"/></svg> Change number</button>
+        <h2>Enter the 6-digit OTP</h2>
+        <p class="auth__sub">Sent by SMS to <b id="otpTo"></b>.</p>
+        <div class="demo-otp" id="demoOtp" hidden><svg class="ic"><use href="#i-clock"/></svg><span>Demo mode — SMS gateway not connected. Your OTP is <code id="demoOtpCode"></code></span></div>
+        <div class="otp-boxes" id="otpBoxes">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+        </div>
+        <p class="field-error" id="otpError" hidden></p>
+        <button type="submit" class="btn btn--red btn--block" id="verifyOtp">Verify &amp; login</button>
+        <p class="auth__resend">Didn't get it? <button type="button" class="link" id="resendOtp" disabled>Resend OTP <span id="resendTimer"></span></button></p>
+      </form>
+
+      <p class="auth__switch">New to SPOCART? <a href="signup.html" id="toSignup">Create a wholesale account</a></p>
+      <p class="auth__legal">By continuing you agree to our <a href="policies.html#terms">Terms</a> and <a href="policies.html#privacy">Privacy policy</a>.</p>
+    </section>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/auth-pages.js"></script>
+</body>
+</html>

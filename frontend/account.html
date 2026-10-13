@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My account — SPOCART Wholesale</title>
+  <meta name="description" content="Your SPOCART business account: recent orders, quote requests, delivery addresses, GST details and payment options." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="account">
+
+<div id="siteHeader"></div>
+
+<main class="account">
+  <!-- ===================== PROFILE HERO ===================== -->
+  <div class="catalog__head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>My account</span></nav>
+      <div class="profile">
+        <span class="profile__avatar" id="avatar">RS</span>
+        <div class="profile__info">
+          <h1 id="profileName">Rajesh Sports</h1>
+          <div class="profile__meta" id="profileMeta"></div>
+        </div>
+        <div class="profile__actions">
+          <button class="btn btn--outline btn--sm" id="editProfile"><svg class="ic"><use href="#i-user"/></svg> Edit profile</button>
+          <a href="orders.html" class="btn btn--dark btn--sm"><svg class="ic"><use href="#i-box"/></svg> My orders</a>
+          <a href="catalog.html" class="btn btn--red btn--sm">Order again <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container account__body">
+    <!-- ===================== SIDE NAV ===================== -->
+    <nav class="account-nav" id="accountNav" aria-label="Account sections">
+      <a href="#overview" class="is-active"><svg class="ic"><use href="#i-grid"/></svg> Overview</a>
+      <a href="#my-orders"><svg class="ic"><use href="#i-box"/></svg> My orders <em id="navOrders"></em></a>
+      <a href="#quotes"><svg class="ic"><use href="#i-quote"/></svg> Quote requests <em id="navQuotes"></em></a>
+      <a href="#notifications" id="navNotifLink"><svg class="ic"><use href="#i-clock"/></svg> Notifications <em id="navNotif"></em></a>
+      <a href="#addresses"><svg class="ic"><use href="#i-pin"/></svg> Addresses</a>
+      <a href="#business"><svg class="ic"><use href="#i-receipt"/></svg> Business &amp; GST</a>
+      <a href="#payments"><svg class="ic"><use href="#i-card"/></svg> Payments</a>
+      <a href="#support"><svg class="ic"><use href="#i-headset"/></svg> Support</a>
+      <hr>
+      <button class="account-nav__signout" id="signOut"><svg class="ic"><use href="#i-close"/></svg> Sign out</button>
+    </nav>
+
+    <div class="account__main">
+      <!-- ===================== OVERVIEW ===================== -->
+      <section class="panel" id="overview">
+        <div class="overview-grid" id="overviewStats"></div>
+        <div class="order-banner" id="dueBanner" hidden>
+          <span class="order-banner__icon order-banner__icon--red"><svg class="ic"><use href="#i-clock"/></svg></span>
+          <div><strong id="dueTitle"></strong><span id="dueText"></span></div>
+          <a href="orders.html?tab=pending" class="btn btn--red btn--sm">Pay now</a>
+        </div>
+      </section>
+
+      <!-- ===================== MY ORDERS ===================== -->
+      <section class="panel" id="my-orders">
+        <div class="panel__head">
+          <div><h2>My orders</h2><p>Your latest bulk orders. Track, pay or reorder from here.</p></div>
+          <a href="orders.html" class="btn btn--outline btn--sm">View all orders <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="order-rows" id="recentOrders"></div>
+        <div class="panel__links">
+          <a href="orders.html?tab=shipped"><svg class="ic"><use href="#i-truck"/></svg> Track shipments</a>
+          <a href="orders.html?tab=delivered"><svg class="ic"><use href="#i-download"/></svg> Download GST invoices</a>
+          <a href="orders.html?tab=delivered"><svg class="ic"><use href="#i-refresh"/></svg> Reorder a past order</a>
+        </div>
+      </section>
+
+      <!-- ===================== QUOTES ===================== -->
+      <section class="panel" id="quotes">
+        <div class="panel__head">
+          <div><h2>Quote requests</h2><p>Products you've asked a sealed quote for. Our team replies within 2 hours.</p></div>
+          <button class="btn btn--dark btn--sm" id="sendQuotes"><svg class="ic"><use href="#i-quote"/></svg> Request sealed quote</button>
+        </div>
+        <div class="quote-list" id="quoteList"></div>
+        <div id="quoteHistoryWrap" hidden>
+          <h5 class="editor-h" style="margin-top:8px">Submitted requests</h5>
+          <div class="quote-list" id="quoteHistory"></div>
+        </div>
+      </section>
+
+      <!-- ===================== NOTIFICATIONS ===================== -->
+      <section class="panel" id="notifications" hidden>
+        <div class="panel__head">
+          <div><h2>Notifications</h2><p>Order updates, dispatches and offers from SPOCART.</p></div>
+          <button class="btn btn--outline btn--sm" id="readAllNotif">Mark all read</button>
+        </div>
+        <ul class="notif-list" id="notifList"></ul>
+      </section>
+
+      <!-- ===================== ADDRESSES ===================== -->
+      <section class="panel" id="addresses">
+        <div class="panel__head">
+          <div><h2>Delivery addresses</h2><p>Your default address is used at checkout and printed on the GST invoice.</p></div>
+          <button class="btn btn--dark btn--sm" id="addAddress"><svg class="ic"><use href="#i-plus"/></svg> Add address</button>
+        </div>
+        <div class="address-grid" id="addressGrid"></div>
+        <form class="address-form" id="addressForm" hidden>
+          <input type="hidden" name="id" />
+          <div class="form-grid">
+            <label>Label (Shop, Godown, School…)<input name="label" placeholder="Shop" /></label>
+            <label>Receiver / business name<input name="name" required /></label>
+            <label class="span-2">Address line<input name="line" required /></label>
+            <label>City<input name="city" required /></label>
+            <label>State<select name="state" id="addrState"><option value="">Select state</option></select></label>
+            <label>PIN code<input name="pincode" inputmode="numeric" maxlength="6" required /></label>
+            <label>Phone<input name="phone" required /></label>
+            <label>GSTIN (printed on invoice)<input name="gstin" style="text-transform:uppercase" /></label>
+            <label class="check check--inline" style="align-self:end"><input type="checkbox" name="isDefault" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>Make this my default address</span></label>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn--outline btn--sm" id="cancelAddress">Cancel</button>
+            <button type="submit" class="btn btn--dark btn--sm">Save address</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ===================== BUSINESS ===================== -->
+      <section class="panel" id="business">
+        <div class="panel__head">
+          <div><h2>Business &amp; GST</h2><p>Verified details for input tax credit on every order.</p></div>
+          <span class="tag tag--green"><svg class="ic" style="width:12px;height:12px"><use href="#i-check-circle"/></svg> GST verified</span>
+        </div>
+        <dl class="kv" id="businessDetails"></dl>
+        <form class="address-form" id="profileForm" hidden>
+          <div class="form-grid">
+            <label>Business / school name<input name="business" required /></label>
+            <label>Contact person<input name="contact" required /></label>
+            <label>Email<input name="email" type="email" required /></label>
+            <label>Mobile (login number)<input name="phone" disabled /></label>
+            <label>GSTIN<input name="gstin" style="text-transform:uppercase" /></label>
+            <label id="panField">PAN<input name="pan" style="text-transform:uppercase" /></label>
+            <label id="btypeField" hidden>Business type<select name="businessType"><option value="retailer">Retail shop</option><option value="wholesaler">Wholesaler / distributor</option><option value="school">School</option><option value="academy">Academy</option><option value="club">Club</option><option value="gym">Gym</option><option value="corporate">Corporate</option><option value="other">Other</option></select></label>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn--outline btn--sm" id="cancelProfile">Cancel</button>
+            <button type="submit" class="btn btn--dark btn--sm">Save profile</button>
+          </div>
+        </form>
+        <div class="buyer-type-row">
+          <div><strong>Buyer type</strong><span>Sets the price list you see across the catalog.</span></div>
+          <div class="chips" id="buyerChips"></div>
+        </div>
+        <div class="credit">
+          <div class="credit__head"><strong>Pay-later credit</strong><span id="creditText"></span></div>
+          <div class="freight__bar"><i id="creditBar"></i></div>
+          <small>30-day credit on delivered orders. Limit reviews every quarter based on order history.</small>
+        </div>
+      </section>
+
+      <!-- ===================== PAYMENTS ===================== -->
+      <section class="panel" id="payments">
+        <div class="panel__head"><div><h2>Payments</h2><p>Ways to settle your orders. No card details are stored on the website.</p></div></div>
+        <div class="pay-grid">
+          <div class="pay"><strong>UPI</strong><p>Pay to <code>spocart@okaxis</code> (SPOCART). Add your order ID in the note.</p><button class="btn btn--outline btn--sm" data-copy="spocart@okaxis">Copy UPI ID</button></div>
+          <div class="pay"><strong>Bank transfer / NEFT</strong><p>Details are printed on every proforma invoice. Share the UTR on WhatsApp for same-day confirmation.</p><a href="https://wa.me/917061911575" target="_blank" rel="noopener" class="btn btn--outline btn--sm">Share UTR</a></div>
+          <div class="pay"><strong>Pay later (30 days)</strong><p>Available within your credit limit on delivered orders. Interest-free if cleared on time.</p><span class="tag tag--green">Enabled</span></div>
+        </div>
+      </section>
+
+      <!-- ===================== SUPPORT ===================== -->
+      <section class="panel" id="support">
+        <div class="panel__head"><div><h2>Your dedicated manager</h2><p>One person for quotes, tenders and repeat orders.</p></div></div>
+        <div class="manager">
+          <span class="avatar">SP</span>
+          <div><strong>SPOCART Sales Desk</strong><span>Mon–Sat, 10:00 am – 7:00 pm IST • sales@spocart.in</span></div>
+          <div class="help-card__actions">
+            <a href="partner.html?topic=support" class="btn btn--outline btn--sm"><svg class="ic"><use href="#i-headset"/></svg> Raise a request</a>
+            <a href="https://wa.me/917061911575" target="_blank" rel="noopener" class="btn btn--outline btn--sm"><svg class="ic"><use href="#i-whatsapp"/></svg> WhatsApp</a>
+            <a href="tel:+917061911575" class="btn btn--dark btn--sm"><svg class="ic"><use href="#i-phone"/></svg> Call</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/orders-data.js"></script>
+<script src="js/account.js"></script>
+</body>
+</html>

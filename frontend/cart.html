@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart & checkout — SPOCART Wholesale</title>
+  <meta name="description" content="Review your bulk order, apply slab pricing and coupons, choose a payment method and place your SPOCART wholesale order." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="cart">
+
+<div id="siteHeader"></div>
+
+<main class="cartpage">
+  <div class="catalog__head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="catalog.html">Catalog</a> / <span>Cart</span></nav>
+      <div class="catalog__title">
+        <div>
+          <h1>Your cart</h1>
+          <p class="orders__sub" id="cartSub">Review quantities — slab prices apply automatically.</p>
+        </div>
+        <ol class="steps" aria-label="Checkout steps">
+          <li class="is-current"><i>1</i> Cart</li>
+          <li><i>2</i> Payment</li>
+          <li><i>3</i> Confirmed</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="container cartpage__body" id="cartBody">
+    <!-- ===================== LINES ===================== -->
+    <section class="cartpage__main">
+      <div class="cart-toolbar">
+        <div class="buyer-inline">
+          <span>Pricing for</span>
+          <div class="chips" id="buyerChips"></div>
+        </div>
+        <div class="cart-toolbar__links">
+          <a href="catalog.html" class="link">Continue shopping</a>
+          <button class="link link--muted" id="clearCart">Clear cart</button>
+        </div>
+      </div>
+
+      <div class="cart-lines" id="cartLines"></div>
+
+      <div class="cart-slab-tip" id="slabTip" hidden>
+        <span class="slab-banner__icon"><svg class="ic"><use href="#i-percent"/></svg></span>
+        <p id="slabTipText"></p>
+      </div>
+
+      <div class="cart-empty-page" id="cartEmptyPage" hidden>
+        <svg class="ic"><use href="#i-cart"/></svg>
+        <h3>Your cart is empty</h3>
+        <p>Add bulk items from the catalog — MOQ from 10 pcs, GST invoice on every order.</p>
+        <a href="catalog.html" class="btn btn--red">Browse bulk catalog</a>
+      </div>
+
+      <!-- ===================== DELIVERY + PAYMENT ===================== -->
+      <div class="checkout-cards" id="checkoutCards">
+        <div class="panel">
+          <div class="panel__head">
+            <div><h2>Deliver to</h2><p>Your default address. Printed on the GST invoice.</p></div>
+            <a href="account.html#addresses" class="btn btn--outline btn--sm"><svg class="ic"><use href="#i-pin"/></svg> Change</a>
+          </div>
+          <div class="address address--default" id="deliverTo"></div>
+          <p class="filter-note" id="deliverNote" hidden>You'll confirm the delivery address after logging in.</p>
+          <label class="check check--inline"><input type="checkbox" id="staggered" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>Staggered delivery — split this order into monthly lots (schools &amp; academies)</span></label>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><div><h2>Payment</h2><p>Choose how you'd like to settle this order.</p></div></div>
+          <div class="pay-options" id="payOptions">
+            <label class="pay-option"><input type="radio" name="pay" value="UPI" checked /><div><strong>UPI</strong><span>Pay to spocart@okaxis after placing. Order confirms instantly on payment.</span></div></label>
+            <label class="pay-option"><input type="radio" name="pay" value="Net banking" /><div><strong>Net banking / NEFT</strong><span>Bank details on the proforma invoice. Share the UTR on WhatsApp.</span></div></label>
+            <label class="pay-option"><input type="radio" name="pay" value="Pay later (30 days)" /><div><strong>Pay later (30 days)</strong><span id="payLaterNote">Interest-free credit on delivered orders.</span></div></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SUMMARY ===================== -->
+    <aside class="summary" id="summary">
+      <div class="summary__card">
+        <h3>Order summary</h3>
+        <form class="coupon-form" id="couponForm">
+          <input type="text" id="couponInput" placeholder="Coupon code" autocomplete="off" />
+          <button type="submit" class="btn btn--dark btn--sm">Apply</button>
+        </form>
+        <div class="coupon-applied" id="couponApplied" hidden></div>
+        <div class="totals totals--card">
+          <div><span id="sumItems">Items</span><b id="sumMrp">₹0</b></div>
+          <div class="totals__save"><span>Slab savings</span><b id="sumSavings">−₹0</b></div>
+          <div id="sumCouponRow" hidden><span>Coupon</span><b id="sumCoupon">−₹0</b></div>
+          <div><span>Subtotal</span><b id="sumSubtotal">₹0</b></div>
+          <div><span>GST (18%)</span><b id="sumGst">₹0</b></div>
+          <div><span>Freight</span><b id="sumFreight">₹0</b></div>
+          <div class="totals__grand"><span>Total payable</span><b id="sumTotal">₹0</b></div>
+        </div>
+        <div class="freight" id="sumFreightNote"></div>
+        <button class="btn btn--red btn--block" id="placeOrder">Place order <svg class="ic"><use href="#i-arrow"/></svg></button>
+        <button class="btn btn--outline btn--block" id="quoteCart"><svg class="ic"><use href="#i-quote"/></svg> Get a sealed quote instead</button>
+        <ul class="assurance">
+          <li><svg class="ic"><use href="#i-shield"/></svg> 100% genuine, brand warranty</li>
+          <li><svg class="ic"><use href="#i-receipt"/></svg> GST invoice for input credit</li>
+          <li><svg class="ic"><use href="#i-truck"/></svg> Dispatch in 48 hrs, pan-India</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===================== RECOMMENDATIONS ===================== -->
+  <section class="section container" id="recommend">
+    <div class="section__head">
+      <div><span class="eyebrow">Frequently ordered together</span><h2>Complete your bulk order</h2></div>
+      <a href="catalog.html" class="btn btn--outline btn--sm">Full catalog <svg class="ic"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="product-grid" id="recommendGrid"></div>
+  </section>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>

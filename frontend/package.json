@@ -1,0 +1,11 @@
+{
+  "name": "spocart-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SPOCART Wholesale website — static HTML/CSS/JS, no build step",
+  "scripts": {
+    "dev": "npx --yes serve -l 8765 --no-clipboard .",
+    "start": "npx --yes serve -l 8765 --no-clipboard .",
+    "dev:python": "python3 -m http.server 8765"
+  }
+}

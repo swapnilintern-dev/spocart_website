@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPOCART Wholesale — Sports gear in bulk at true wholesale prices</title>
+  <meta name="description" content="SPOCART is India's wholesale sports supplier for shops, schools and academies. Slab pricing, GST billing, free freight over ₹25,000 and pan-India dispatch." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="canonical" href="https://www.spocart.info/" />
+  <meta property="og:title" content="SPOCART Wholesale — Sports gear in bulk at true wholesale prices" />
+  <meta property="og:description" content="India's wholesale sports supplier for shops, schools and academies. Slab pricing, GST billing, free freight over ₹25,000." />
+  <meta property="og:image" content="https://www.spocart.info/assets/images/hero_badminton.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="home">
+
+<div id="siteHeader"></div>
+
+<main id="top">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero container">
+  <div class="hero__main">
+    <div class="hero__content">
+      <span class="pill pill--red"><svg class="ic"><use href="#i-truck"/></svg> PAN-INDIA WHOLESALE SUPPLY</span>
+      <h1>Sports gear in bulk, at true wholesale prices.</h1>
+      <p>One supplier for shops, schools &amp; academies. MOQ from 10 pcs, GST billing, and free freight over ₹25,000.</p>
+      <div class="hero__cta">
+        <a href="catalog.html" class="btn btn--red">Shop bulk catalog</a>
+        <a href="partner.html?topic=quote" class="btn btn--ghost"><svg class="ic"><use href="#i-quote"/></svg> Get bulk quote</a>
+      </div>
+      <div class="hero__stats">
+        <div><strong>12,000+</strong><span>B2B buyers served</span></div>
+        <div><strong>850+ SKUs</strong><span>Ready stock</span></div>
+        <div><strong>4.8 <svg class="ic ic--star"><use href="#i-star"/></svg></strong><span>Buyer rating</span></div>
+      </div>
+    </div>
+    <div class="hero__media">
+      <img src="assets/images/hero_badminton.jpg" alt="Athlete mid-smash on a badminton court" />
+      <div class="hero__float">
+        <span class="hero__float-icon"><svg class="ic"><use href="#i-school"/></svg></span>
+        <div>
+          <strong>School kit: 50 balls + 20 bats</strong>
+          <span>Bulk price <b>₹42,500</b> • <em>Save 32%</em></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="hero__side">
+    <div class="pricecheck">
+      <h3>Instant bulk price check</h3>
+      <p>See your slab discount live.</p>
+      <div class="pricecheck__row">
+        <select id="pcProduct" aria-label="Product"></select>
+        <select id="pcQty" aria-label="Quantity">
+          <option value="10">Qty: 10</option>
+          <option value="50">Qty: 50</option>
+          <option value="100" selected>Qty: 100</option>
+          <option value="250">Qty: 250</option>
+          <option value="500">Qty: 500</option>
+          <option value="1000">Qty: 1000</option>
+        </select>
+      </div>
+      <div class="slabs" id="pcSlabs"></div>
+      <label class="pricecheck__size" id="pcSizeWrap" hidden><span>Size</span><select id="pcSize" aria-label="Size"></select></label>
+      <button class="btn btn--dark btn--block" id="pcAdd">Add 100 to cart <svg class="ic"><use href="#i-arrow"/></svg></button>
+    </div>
+    <div class="tiles">
+      <a href="policies.html#returns" class="tile tile--dark tile--photo">
+        <img src="assets/images/cricket_ball.jpg" alt="" loading="lazy" />
+        <svg class="ic"><use href="#i-shield"/></svg>
+        <strong>100% Genuine</strong><span>Brand warranty + GST bill</span>
+      </a>
+      <a href="policies.html#shipping" class="tile tile--red tile--photo">
+        <img src="assets/images/warehouse_aisle.jpg" alt="" loading="lazy" />
+        <svg class="ic"><use href="#i-truck"/></svg>
+        <strong>Free freight</strong><span>On orders over ₹25,000</span>
+      </a>
+    </div>
+  </aside>
+</section>
+
+<!-- ===================== BUYER SEGMENTS ===================== -->
+<section class="segments container scroll-row" id="segments">
+  <a href="catalog.html?buyer=shops" class="segment is-active" data-audience="shops">
+    <span class="segment__icon"><svg class="ic"><use href="#i-store"/></svg></span>
+    <div><h4>Retail Shops</h4><p>Restock fast with low MOQs &amp; margin up to 45%</p></div>
+    <span class="tag tag--red">Margin up to 45%</span>
+  </a>
+  <a href="catalog.html?buyer=schools" class="segment" data-audience="schools">
+    <span class="segment__icon"><svg class="ic"><use href="#i-school"/></svg></span>
+    <div><h4>Schools &amp; Academies</h4><p>Full sports kits, tenders &amp; annual contracts</p></div>
+    <span class="tag tag--grey">Tender support</span>
+  </a>
+  <a href="catalog.html?buyer=individual" class="segment" data-audience="individual">
+    <span class="segment__icon"><svg class="ic"><use href="#i-user"/></svg></span>
+    <div><h4>Individual Buyers</h4><p>Single-piece prices below MRP, same genuine stock</p></div>
+    <span class="tag tag--grey">Below MRP</span>
+  </a>
+</section>
+
+<!-- ===================== CATEGORIES ===================== -->
+<section class="section container" id="categories">
+  <div class="section__head">
+    <div><span class="eyebrow">Catalog</span><h2>Shop by category</h2></div>
+    <a href="catalog.html" class="btn btn--outline btn--sm">View all 850+ products <svg class="ic"><use href="#i-arrow"/></svg></a>
+  </div>
+  <div class="cat-grid" id="catGrid"></div>
+</section>
+
+<!-- ===================== BULK DEALS ===================== -->
+<section class="section container" id="deals">
+  <div class="section__head">
+    <div><span class="eyebrow">Bulk deals</span><h2>Best wholesale prices this week</h2></div>
+    <div class="seg-tabs" id="dealTabs" role="tablist">
+      <button class="is-active" data-filter="all" role="tab">All</button>
+      <button data-filter="shops" role="tab">Shops</button>
+      <button data-filter="schools" role="tab">Schools</button>
+    </div>
+  </div>
+  <div class="product-grid scroll-row" id="productGrid"></div>
+  
+  <div class="banner banner--pink">
+    <span class="banner__icon"><svg class="ic"><use href="#i-school"/></svg></span>
+    <div>
+      <strong>School annual sports kit program — one PO, full-year supply</strong>
+      <span>Custom logo printing, staggered delivery &amp; tender documentation included.</span>
+    </div>
+    <a href="partner.html?topic=school" class="btn btn--dark btn--sm">Talk to sales</a>
+  </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section container" id="services">
+  <div class="section__head">
+    <div><span class="eyebrow">Sports services</span><h2>More than products — we run your sports program</h2></div>
+    <a href="partner.html?topic=service" class="btn btn--outline btn--sm">Book a service <svg class="ic"><use href="#i-arrow"/></svg></a>
+  </div>
+  <div class="service-grid scroll-row" id="serviceGrid"></div>
+</section>
+
+<!-- ===================== WHY SPOCART ===================== -->
+<section class="why">
+  <div class="container">
+    <div class="section__head">
+      <div><span class="eyebrow eyebrow--red">Why SPOCART</span><h2>Built for bulk buyers, not just carts</h2></div>
+      <a href="partner.html?topic=partner" class="btn btn--red btn--sm">Become a B2B partner</a>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><span class="why-card__icon"><svg class="ic"><use href="#i-layers"/></svg></span><strong>Slab pricing</strong><p>Deeper discount at 50 / 100 / 500 pcs automatically applied</p></div>
+      <div class="why-card"><span class="why-card__icon"><svg class="ic"><use href="#i-receipt"/></svg></span><strong>GST billing</strong><p>Proper tax invoice for input credit on every order</p></div>
+      <div class="why-card"><span class="why-card__icon"><svg class="ic"><use href="#i-truck"/></svg></span><strong>Fast dispatch</strong><p>48-hr dispatch from Delhi, Mumbai &amp; Chennai warehouses</p></div>
+      <div class="why-card"><span class="why-card__icon"><svg class="ic"><use href="#i-headset"/></svg></span><strong>Dedicated manager</strong><p>A real person for quotes, tenders &amp; repeat orders</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS + COUPON ===================== -->
+<section class="section container social scroll-row">
+  <figure class="quote-card">
+    <div class="stars" aria-label="5 star rating">★★★★★</div>
+    <blockquote>"Restocked my whole shop in 3 days. Margins are the best I have seen in 10 years of retail."</blockquote>
+    <figcaption><span class="avatar">RS</span><div><strong>Rajesh Sports, Delhi</strong><span>Retail shop • 400 pcs/month</span></div></figcaption>
+  </figure>
+  <figure class="quote-card">
+    <div class="stars" aria-label="5 star rating">★★★★★</div>
+    <blockquote>"Annual contract for 6 schools. GST billing and tender papers were handled perfectly."</blockquote>
+    <figcaption><span class="avatar">GA</span><div><strong>Greenfield Academy</strong><span>School • 1,200 pcs/year</span></div></figcaption>
+  </figure>
+  <div class="coupon">
+    <h3>New buyer? Get extra 5% off your first bulk order.</h3>
+    <p>Code auto-applied at checkout. Min. ₹10,000.</p>
+    <div class="coupon__row">
+      <code id="couponCode">BULK5</code>
+      <button class="btn btn--red btn--sm" id="claimCoupon">Claim</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

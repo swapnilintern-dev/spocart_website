@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policies — SPOCART Wholesale</title>
+  <meta name="description" content="SPOCART Wholesale terms of sale, privacy policy, shipping, returns and GST billing." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="policies">
+<div id="siteHeader"></div>
+<main>
+  <div class="catalog__head"><div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Policies</span></nav>
+    <div class="catalog__title"><div><h1>Policies</h1><p class="orders__sub">How we sell, ship, bill and protect your data. Last updated 1 September 2026.</p></div></div>
+  </div></div>
+  <div class="container account__body">
+    <nav class="account-nav" aria-label="Policy sections">
+      <a href="#terms" class="is-active">Terms of sale</a><a href="#shipping">Shipping</a><a href="#returns">Returns &amp; warranty</a><a href="#gst">GST &amp; billing</a><a href="#privacy">Privacy</a>
+    </nav>
+    <div class="account__main policy">
+      <section class="panel" id="terms"><h2>Terms of sale</h2>
+        <p>SPOCART Wholesale ("SPOCART", "we") supplies sporting goods to retail shops, schools, academies and individual buyers across India. By placing an order on this website or with our sales desk you agree to these terms.</p>
+        <ul><li><b>Pricing.</b> Prices are per unit, exclusive of GST unless stated, and depend on your buyer type and quantity slab (10+, 100+, 500+). Slab pricing is applied automatically at checkout. Prices may change without notice; a confirmed order is honoured at the price shown at the time of confirmation.</li>
+        <li><b>Minimum order quantity.</b> Each product lists an MOQ for wholesale buyers. Individual buyers may order single pieces at the individual price.</li>
+        <li><b>Order confirmation.</b> An order is confirmed on receipt of payment (UPI / bank transfer) or on approval of pay-later credit. Stock is held for 24 hours for unpaid orders.</li>
+        <li><b>Cancellation.</b> Orders can be cancelled free of charge until they are packed. Cancellations after dispatch are treated as returns.</li>
+        <li><b>Credit terms.</b> Pay-later (30 days) is offered within an approved credit limit on delivered orders. Overdue amounts attract 1.5% per month.</li></ul></section>
+      <section class="panel" id="shipping"><h2>Shipping &amp; delivery</h2>
+        <ul><li>Orders dispatch within 48 working hours from our Delhi, Mumbai or Chennai warehouse — whichever holds stock closest to you.</li>
+        <li><b>Freight is free on orders of ₹25,000 and above</b> (excl. GST). Below that, freight is ₹1,200 per consignment pan-India, shown before you pay.</li>
+        <li>Typical transit: 2–4 days metro, 4–7 days rest of India. Tracking is shared by SMS/WhatsApp and on the <a href="orders.html">orders page</a>.</li>
+        <li>Schools and academies can request <b>staggered delivery</b> (monthly lots against one PO) at checkout.</li>
+        <li>Please check cartons at delivery and note any shortage or damage on the courier's POD.</li></ul></section>
+      <section class="panel" id="returns"><h2>Returns &amp; warranty</h2>
+        <ul><li>All products are genuine and carry the manufacturer's warranty.</li>
+        <li>Report transit damage or shortage within 48 hours of delivery with photos — we replace or credit at no cost.</li>
+        <li>Manufacturing defects can be returned within 7 days of delivery for replacement. Used, customised (logo-printed) or size-split items are not returnable unless defective.</li>
+        <li>Refunds for cancelled paid orders are processed to the original payment method within 5–7 working days.</li></ul></section>
+      <section class="panel" id="gst"><h2>GST &amp; billing</h2>
+        <ul><li>Every order ships with a <b>GST tax invoice</b> (CGST + SGST or IGST as applicable) so registered buyers can claim input credit. Add your GSTIN in <a href="account.html#business">Business &amp; GST</a>.</li>
+        <li>Sporting goods are generally taxed at 12% or 18% under HSN 9506; the rate applicable to each item is printed on the invoice. The site shows an indicative 18%.</li>
+        <li>Invoices can be downloaded any time from the <a href="orders.html">orders page</a>. Proforma invoices are issued for bank transfers and tenders on request.</li>
+        <li>SPOCART GSTIN: 07AAECS9876K1ZP • Place of supply is determined by the delivery address.</li></ul></section>
+      <section class="panel" id="privacy"><h2>Privacy policy</h2>
+        <ul><li>We collect your mobile number (for OTP login and order updates), business details, GSTIN and delivery addresses to fulfil orders and issue invoices.</li>
+        <li>We send transactional messages (OTP, order status, invoices) by SMS/WhatsApp/email. Promotional messages are optional and can be stopped any time from your account or by replying STOP.</li>
+        <li>Payment details are handled by our payment partners; card or bank credentials are never stored on SPOCART systems.</li>
+        <li>We do not sell personal data. Data is shared only with courier and payment partners as needed to complete your order, and with authorities where legally required.</li>
+        <li>To access, correct or delete your data, email <a href="mailto:sales@spocart.in">sales@spocart.in</a> from your registered address.</li></ul></section>
+      <p class="filter-note">Questions about any policy? <a href="partner.html?topic=support" class="link">Contact the sales desk</a>.</p>
+    </div>
+  </div>
+</main>
+<div id="siteFooter"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script>
+  (() => {
+    const links = [...document.querySelectorAll('.account-nav a')];
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) links.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === '#' + en.target.id));
+    }), { rootMargin: '-30% 0px -60% 0px' });
+    links.forEach((a) => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create account — SPOCART Wholesale</title>
+  <meta name="description" content="Register your shop, school or academy with SPOCART Wholesale using your mobile number and OTP." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="signup">
+<div id="siteHeader"></div>
+
+<main class="auth">
+  <div class="container auth__grid">
+    <aside class="auth__side">
+      <span class="pill pill--red">Free B2B account</span>
+      <h1>Buy sports gear at true wholesale prices.</h1>
+      <p>Register in two minutes with your mobile number. We'll set up slab pricing for your buyer type and GST billing for your business.</p>
+      <ol class="auth__steps" id="signupSteps">
+        <li class="is-current"><i>1</i> Verify mobile</li>
+        <li><i>2</i> Your details</li>
+        <li><i>3</i> Start ordering</li>
+      </ol>
+    </aside>
+
+    <section class="auth__card">
+      <!-- Step 1: mobile -->
+      <form class="auth__step" id="stepMobile" novalidate>
+        <h2>Create your account</h2>
+        <p class="auth__sub">We'll send a one-time password to verify your number.</p>
+        <label class="field">
+          <span>Mobile number</span>
+          <div class="phone-input"><b>+91</b><input type="tel" id="mobile" inputmode="numeric" maxlength="10" placeholder="98765 43210" autocomplete="tel-national" required /></div>
+        </label>
+        <p class="field-error" id="mobileError" hidden></p>
+        <button type="submit" class="btn btn--red btn--block" id="sendOtp">Send OTP <svg class="ic"><use href="#i-arrow"/></svg></button>
+      </form>
+
+      <!-- Step 2: OTP -->
+      <form class="auth__step" id="stepOtp" hidden novalidate>
+        <button type="button" class="auth__back" id="changeMobile"><svg class="ic"><use href="#i-chevron-left"/></svg> Change number</button>
+        <h2>Enter the 6-digit OTP</h2>
+        <p class="auth__sub">Sent by SMS to <b id="otpTo"></b>.</p>
+        <div class="demo-otp" id="demoOtp" hidden><svg class="ic"><use href="#i-clock"/></svg><span>Demo mode — SMS gateway not connected. Your OTP is <code id="demoOtpCode"></code></span></div>
+        <div class="otp-boxes" id="otpBoxes">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+        </div>
+        <p class="field-error" id="otpError" hidden></p>
+        <button type="submit" class="btn btn--red btn--block" id="verifyOtp">Verify &amp; continue</button>
+        <p class="auth__resend">Didn't get it? <button type="button" class="link" id="resendOtp" disabled>Resend OTP <span id="resendTimer"></span></button></p>
+      </form>
+
+      <!-- Step 3: details -->
+      <form class="auth__step" id="stepDetails" hidden novalidate>
+        <div class="verified-badge"><svg class="ic"><use href="#i-check-circle"/></svg> <span id="verifiedMobile"></span> verified</div>
+        <h2>Tell us about your business</h2>
+        <p class="auth__sub">Used for slab pricing, GST invoices and delivery.</p>
+
+        <div class="form-grid">
+          <label class="field"><span>Your name</span><input name="contact" autocomplete="name" required placeholder="Rajesh Kumar" /></label>
+          <label class="field"><span>Business / school name</span><input name="business" autocomplete="organization" required placeholder="Rajesh Sports" /></label>
+          <label class="field span-2"><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@business.in" /></label>
+        </div>
+
+        <label class="field" id="btypeSelectWrap" hidden><span>Business type</span><select name="businessTypeSel"><option value="retailer">Retail shop</option><option value="wholesaler">Wholesaler / distributor</option><option value="school">School</option><option value="academy">Academy</option><option value="club">Club</option><option value="gym">Gym</option><option value="corporate">Corporate</option><option value="other">Other / individual</option></select></label>
+        <div class="field" id="buyerRadioWrap">
+          <span>I'm buying as</span>
+          <div class="buyer-radio" id="buyerRadio">
+            <label><input type="radio" name="buyerType" value="shops" checked /><span><svg class="ic"><use href="#i-store"/></svg> Retail shop</span></label>
+            <label><input type="radio" name="buyerType" value="schools" /><span><svg class="ic"><use href="#i-school"/></svg> School / Academy</span></label>
+            <label><input type="radio" name="buyerType" value="individual" /><span><svg class="ic"><use href="#i-user"/></svg> Individual</span></label>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field"><span>GSTIN <em id="gstinHint">(optional — for input credit)</em></span><input name="gstin" placeholder="07AABCR1234F1Z5" style="text-transform:uppercase" /></label>
+          <label class="field" id="panWrap"><span>PAN <em>(optional)</em></span><input name="pan" placeholder="AABCR1234F" style="text-transform:uppercase" /></label>
+          <label class="field span-2"><span>Delivery address</span><input name="line" autocomplete="street-address" required placeholder="Shop no., street, area" /></label>
+          <label class="field"><span>City</span><input name="city" autocomplete="address-level2" required placeholder="New Delhi" /></label>
+          <label class="field"><span>State</span><select name="state" required id="stateSelect"><option value="">Select state</option></select></label>
+          <label class="field"><span>PIN code</span><input name="pin" inputmode="numeric" maxlength="6" autocomplete="postal-code" required placeholder="110005" /></label>
+        </div>
+
+        <label class="check check--inline"><input type="checkbox" id="agree" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>I agree to the <a href="policies.html#terms" target="_blank">Terms</a> and <a href="policies.html#privacy" target="_blank">Privacy policy</a>, and to receive order updates on SMS / WhatsApp.</span></label>
+        <p class="field-error" id="detailsError" hidden></p>
+        <button type="submit" class="btn btn--red btn--block" id="createAccount">Create account <svg class="ic"><use href="#i-arrow"/></svg></button>
+      </form>
+
+      <p class="auth__switch">Already registered? <a href="login.html" id="toLogin">Login</a></p>
+    </section>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/auth-pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin login — SPOCART Wholesale</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="admin-login" class="admin-body">
+
+<main class="admin-login">
+  <a href="index.html" class="admin-login__brand"><img src="assets/brand/logo_light.png" alt="SPOCART" /></a>
+  <section class="auth__card admin-login__card">
+    <span class="admin-badge"><svg class="ic"><use href="#i-shield"/></svg> Staff only</span>
+
+    <form class="auth__step" id="stepMobile" novalidate>
+      <h2>Admin login</h2>
+      <p class="auth__sub">Your admin mobile number and password. A one-time code follows, so both are needed to get in.</p>
+      <label class="field">
+        <span>Admin mobile number</span>
+        <div class="phone-input"><b>+91</b><input type="tel" id="mobile" inputmode="numeric" maxlength="10" placeholder="70619 11575" autocomplete="username" required /></div>
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="password" placeholder="Your admin password" autocomplete="current-password" required />
+      </label>
+      <p class="field-error" id="mobileError" hidden></p>
+      <button type="submit" class="btn btn--red btn--block" id="sendOtp">Continue <svg class="ic"><use href="#i-arrow"/></svg></button>
+    </form>
+
+    <form class="auth__step" id="stepOtp" hidden novalidate>
+      <button type="button" class="auth__back" id="changeMobile"><svg class="ic"><use href="#i-chevron-left"/></svg> Change number</button>
+      <h2>Enter the 6-digit OTP</h2>
+      <p class="auth__sub">Sent by SMS to <b id="otpTo"></b>.</p>
+      <div class="demo-otp" id="demoOtp" hidden><svg class="ic"><use href="#i-clock"/></svg><span>Demo mode — SMS gateway not connected. Your OTP is <code id="demoOtpCode"></code></span></div>
+      <div class="otp-boxes" id="otpBoxes">
+        <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5" /><input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+      </div>
+      <p class="field-error" id="otpError" hidden></p>
+      <button type="submit" class="btn btn--red btn--block" id="verifyOtp">Verify &amp; open admin panel</button>
+      <p class="auth__resend">Didn't get it? <button type="button" class="link" id="resendOtp" disabled>Resend OTP <span id="resendTimer"></span></button></p>
+    </form>
+
+    <p class="auth__legal">Customer? <a href="login.html">Go to customer login</a> · <a href="index.html">Back to website</a></p>
+  </section>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/admin-login.js"></script>
+</body>
+</html>

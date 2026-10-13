@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin panel — SPOCART Wholesale</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="admin" class="admin-body">
+
+<header class="admin-top">
+  <div class="admin-top__inner">
+    <a href="index.html" class="admin-top__brand"><img src="assets/brand/logo_light.png" alt="SPOCART" /><span>Admin panel</span></a>
+    <button class="icon-btn admin-top__burger" id="adminBurger" aria-label="Menu"><svg class="ic"><use href="#i-menu"/></svg></button>
+    <div class="admin-top__right">
+      <span class="admin-top__user"><svg class="ic"><use href="#i-shield"/></svg> <b id="adminName"></b></span>
+      <a href="index.html" class="btn btn--ghost btn--sm">View site</a>
+      <button class="btn btn--red btn--sm" id="adminSignOut">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<div class="admin">
+  <nav class="admin-nav" id="adminNav">
+    <button class="is-active" data-view="overview"><svg class="ic"><use href="#i-grid"/></svg> Overview</button>
+    <button data-view="analytics"><svg class="ic"><use href="#i-percent"/></svg> Analytics</button>
+    <button data-view="orders"><svg class="ic"><use href="#i-box"/></svg> Orders <em id="navOrders"></em></button>
+    <button data-view="enquiries"><svg class="ic"><use href="#i-headset"/></svg> Enquiries <em id="navEnquiries"></em></button>
+    <button data-view="products"><svg class="ic"><use href="#i-layers"/></svg> Products &amp; stock <em id="navLow"></em></button>
+    <button data-view="customers"><svg class="ic"><use href="#i-user"/></svg> Customers</button>
+    <button data-view="alerts"><svg class="ic"><use href="#i-clock"/></svg> Stock alerts <em id="navAlerts"></em></button>
+    <button data-view="database" id="navDb"><svg class="ic"><use href="#i-receipt"/></svg> Database</button>
+    <hr>
+    <a href="admin-login.html" class="admin-nav__link" hidden></a>
+    <p class="admin-nav__note" id="modeNote"></p>
+  </nav>
+
+  <main class="admin-main">
+    <!-- ===== OVERVIEW ===== -->
+    <section class="admin-view" data-view="overview">
+      <div class="admin-head"><h1>Overview</h1><span class="muted" id="today"></span></div>
+      <div class="overview-grid admin-stats" id="adminStats"></div>
+      <div class="admin-two">
+        <div class="admin-card">
+          <div class="admin-card__head"><h3>Needs action</h3></div>
+          <ul class="todo" id="todoList"></ul>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card__head"><h3>Recent orders</h3><button class="link" data-goto="orders">All orders</button></div>
+          <table class="admin-table" id="recentOrdersTable"></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ANALYTICS ===== -->
+    <section class="admin-view" data-view="analytics" hidden>
+      <div class="admin-head">
+        <h1>Analytics</h1>
+        <span class="muted" id="analyticsRange"></span>
+      </div>
+
+      <!-- Filters in one row above the charts. -->
+      <div class="admin-tools">
+        <label class="field field--inline">
+          <span>Period</span>
+          <select id="analyticsPeriod">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last 12 months</option>
+          </select>
+        </label>
+        <button class="btn btn--outline btn--sm" id="analyticsRefresh"><svg class="ic"><use href="#i-refresh"/></svg> Refresh</button>
+      </div>
+
+      <div class="overview-grid admin-stats" id="analyticsStats"></div>
+
+      <div class="admin-card">
+        <div class="admin-card__head">
+          <h3 id="salesChartTitle">Revenue per day</h3>
+          <button class="link" id="salesToggle" data-metric="total">Show orders instead</button>
+        </div>
+        <div id="salesChart" class="chart"></div>
+        <details class="chart-data">
+          <summary>View as table</summary>
+          <div class="chart-data__wrap"><table class="admin-table" id="salesTable"></table></div>
+        </details>
+      </div>
+
+      <div class="admin-two">
+        <div class="admin-card">
+          <div class="admin-card__head"><h3>Month by month</h3></div>
+          <table class="admin-table" id="monthlyTable"></table>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card__head"><h3>Stock</h3><button class="link" data-goto="products">Manage</button></div>
+          <div id="stockSummary"></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-card__head"><h3>Most viewed products</h3><span class="muted">Views and how many turned into a cart add</span></div>
+        <table class="admin-table" id="productInterestTable"></table>
+      </div>
+    </section>
+
+    <!-- ===== ORDERS ===== -->
+    <section class="admin-view" data-view="orders" hidden>
+      <div class="admin-head">
+        <h1>Orders</h1>
+        <div class="admin-tools">
+          <label class="orders__search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="orderSearch" placeholder="Order ID, business or mobile" /></label>
+          <label class="select"><span>Status:</span><select id="orderStatusFilter"><option value="">All</option></select><svg class="ic"><use href="#i-chevron"/></svg></label>
+          <button class="btn btn--outline btn--sm" id="exportOrders"><svg class="ic"><use href="#i-download"/></svg> Export CSV</button>
+        </div>
+      </div>
+      <div class="admin-card"><table class="admin-table" id="ordersTable"></table><p class="empty" id="ordersEmpty" hidden>No orders match.</p></div>
+    </section>
+
+    <!-- ===== ENQUIRIES ===== -->
+    <section class="admin-view" data-view="enquiries" hidden>
+      <div class="admin-head"><h1>Enquiries</h1><label class="switch switch--pill"><input type="checkbox" id="showHandled" /><i></i><span>Show handled</span></label></div>
+      <div class="admin-card"><table class="admin-table" id="enquiriesTable"></table><p class="empty" id="enquiriesEmpty" hidden>No enquiries yet — they arrive from the "Talk to sales" page and the footer callback form.</p></div>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section class="admin-view" data-view="products" hidden>
+      <div class="admin-head">
+        <div><h1>Products &amp; stock</h1><span class="muted" id="productCount"></span></div>
+        <div class="admin-tools">
+          <button class="btn btn--red btn--sm" id="addProduct"><svg class="ic"><use href="#i-plus"/></svg> Add product</button>
+          <button class="btn btn--outline btn--sm" id="restoreRemoved">Restore removed</button>
+          <label class="orders__search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="productSearch" placeholder="Name, brand or category" /></label>
+          <label class="select"><span>Category:</span><select id="productCatFilter"><option value="">All</option></select><svg class="ic"><use href="#i-chevron"/></svg></label>
+          <label class="switch switch--pill"><input type="checkbox" id="lowOnly" /><i></i><span id="lowOnlyLabel">Low stock only</span></label>
+        </div>
+      </div>
+      <p class="filter-note">Flip <b>In stock</b> or <b>On deal</b> and it saves straight away. For anything else — price, name, image, MOQ — open <b>Edit</b>. Customers see every change immediately.</p>
+      <div class="admin-card"><table class="admin-table admin-table--products" id="productsTable"></table></div>
+    </section>
+
+    <!-- ===== CUSTOMERS ===== -->
+    <section class="admin-view" data-view="customers" hidden>
+      <div class="admin-head"><h1>Customers</h1><span class="muted" id="customerCount"></span></div>
+      <form class="admin-card broadcast" id="broadcastForm">
+        <div class="admin-card__head"><h3>Broadcast a notification to all buyers</h3></div>
+        <div class="form-grid form-grid--4">
+          <label class="field"><span>Type</span><select name="type"><option value="offer">Offer</option><option value="newProduct">New product</option><option value="priceDrop">Price drop</option></select></label>
+          <label class="field"><span>Title</span><input name="title" required maxlength="80" placeholder="Monsoon stock-up: 10% off footballs" /></label>
+          <label class="field span-2"><span>Message</span><input name="body" required maxlength="300" placeholder="Valid till 30 Sept on orders above ₹25,000." /></label>
+        </div>
+        <div class="form-actions"><button type="submit" class="btn btn--red btn--sm">Send to all buyers</button></div>
+      </form>
+      <div class="admin-card"><table class="admin-table" id="customersTable"></table><p class="empty" id="customersEmpty" hidden>No registered customers yet.</p></div>
+    </section>
+
+    <!-- ===== DATABASE CONSOLE ===== -->
+    <section class="admin-view" data-view="database" hidden>
+      <div class="admin-head">
+        <div><h1>Database</h1><span class="muted" id="dbSummary">Every table on the server — search, add, edit and delete rows.</span></div>
+        <div class="admin-tools">
+          <label class="select"><span>Table:</span><select id="dbTable"></select><svg class="ic"><use href="#i-chevron"/></svg></label>
+          <label class="orders__search"><svg class="ic"><use href="#i-search"/></svg><input type="search" id="dbSearch" placeholder="Search this table…" /></label>
+          <button class="btn btn--red btn--sm" id="dbAdd"><svg class="ic"><use href="#i-plus"/></svg> Add row</button>
+          <button class="btn btn--outline btn--sm" id="dbExport"><svg class="ic"><use href="#i-download"/></svg> Export JSON</button>
+        </div>
+      </div>
+      <div class="db-tabs" id="dbTabs"></div>
+      <div class="admin-card db-card"><table class="admin-table admin-table--db" id="dbTableEl"></table><p class="empty" id="dbEmpty" hidden>No rows.</p></div>
+      <div class="pagination" id="dbPager"></div>
+      <p class="filter-note">Deletes are guarded on the server (e.g. a category with products, a user with orders, an order with a captured payment). Money columns are in rupees.</p>
+    </section>
+
+    <!-- ===== STOCK ALERTS ===== -->
+    <section class="admin-view" data-view="alerts" hidden>
+      <div class="admin-head"><h1>Back-in-stock requests</h1></div>
+      <p class="filter-note">Customers who tapped "Notify me" on an out-of-stock product. Restock it under Products and they'll be messaged.</p>
+      <div class="admin-card"><table class="admin-table" id="alertsTable"></table><p class="empty" id="alertsEmpty" hidden>No pending requests.</p></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="productModal" hidden>
+  <form class="modal__card modal__card--wide" id="productForm" novalidate>
+    <div class="drawer__head"><h3 id="productModalTitle">Add product</h3><button type="button" class="icon-btn" id="closeProductModal" aria-label="Close">✕</button></div>
+    <div class="modal__body">
+      <input type="hidden" name="id" />
+      <div class="editor-grid">
+        <div class="editor-main">
+          <div class="form-grid">
+            <label class="field span-2"><span>Product name</span><input name="name" required placeholder="Cosco Pro Football Size 5" /></label>
+            <label class="field"><span>Brand</span><select name="brand"></select></label>
+            <label class="field"><span>New brand name</span><input name="newBrand" placeholder="Type the brand" /></label>
+            <label class="field"><span>Category</span><select name="cat"></select></label>
+            <label class="field"><span>Unit</span><select name="unit"><option value="pc">pc</option><option value="pair">pair</option><option value="set">set</option><option value="pack">pack</option><option value="tube">tube</option><option value="can">can</option><option value="box">box</option></select></label>
+            <label class="field span-2"><span>Description <em>(shown on the product card in list view)</em></span><textarea name="desc" rows="2" placeholder="Material, size, what's in the box…"></textarea></label>
+          </div>
+          <h5 class="editor-h">Pricing</h5>
+          <div class="form-grid form-grid--4">
+            <label class="field"><span>MRP (₹)</span><input name="mrp" type="number" min="1" required /></label>
+            <label class="field"><span>MOQ (wholesale)</span><input name="moq" type="number" min="1" required /></label>
+            <label class="field" id="stockNumField"><span>Stock</span><input name="stock" type="number" min="0" /></label>
+            <label class="field" id="stockFlagField" hidden><span>Availability</span><select name="inStock"><option value="1">In stock</option><option value="0">Out of stock</option></select></label>
+            <label class="field"><span>&nbsp;</span><label class="check check--inline"><input type="checkbox" name="deal" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>Featured deal on home</span></label></label>
+          </div>
+          <div class="slab-editor">
+            <div class="slab-editor__row slab-editor__head"><span>Slab</span><span>Min qty</span><span>Unit price (₹)</span><span></span></div>
+            <div id="slabRows"></div>
+            <button type="button" class="link" id="addSlab" style="align-self:flex-start;text-decoration:none">+ Add another slab</button>
+          </div>
+          <p class="filter-note">Schools get 3% off slab prices and individuals pay 8% below MRP automatically — you only set the retail-shop slabs.</p>
+          <h5 class="editor-h">Availability</h5>
+          <div class="form-grid form-grid--4">
+            <label class="check check--inline"><input type="checkbox" name="audShops" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>Sell to shops</span></label>
+            <label class="check check--inline"><input type="checkbox" name="audSchools" /><i><svg class="ic"><use href="#i-check"/></svg></i><span>Sell to schools</span></label>
+            <label class="field"><span>Rating</span><input name="rating" type="number" min="0" max="5" step="0.1" /></label>
+            <label class="field"><span>Reviews</span><input name="reviews" type="number" min="0" /></label>
+          </div>
+          <label class="check check--inline"><input type="checkbox" name="hidden" /><i><svg class="ic"><use href="#i-check"/></svg></i><span><b>Hide from store</b> — keep the product but don't show it to customers</span></label>
+        </div>
+        <aside class="editor-side">
+          <h5 class="editor-h">Image</h5>
+          <img id="imgPreview" class="editor-preview" alt="" />
+          <label class="field"><span>Choose photo</span><select name="imgChoice"></select></label>
+          <div id="customImageRow" hidden>
+            <label class="field"><span>Image URL</span><input name="imgUrl" placeholder="https://…/photo.jpg" /></label>
+            <label class="field"><span>Or upload (JPG/PNG, under 400 KB)</span><input name="imgFile" type="file" accept="image/*" /></label>
+          </div>
+        </aside>
+      </div>
+      <p class="field-error" id="productFormError" hidden></p>
+    </div>
+    <div class="drawer__foot editor-foot">
+      <button type="button" class="link link--muted" id="resetProduct" hidden>Reset to default</button>
+      <button type="button" class="link" id="deleteProduct" hidden>Delete product</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn btn--outline btn--sm" id="cancelProduct" onclick="document.getElementById('productModal').hidden=true">Cancel</button>
+      <button type="submit" class="btn btn--red btn--sm">Save product</button>
+    </div>
+  </form>
+</div>
+<div class="modal" id="dbModal" hidden>
+  <form class="modal__card modal__card--wide" id="dbForm" novalidate>
+    <div class="drawer__head"><h3 id="dbModalTitle"></h3><button type="button" class="icon-btn" id="closeDbModal" aria-label="Close">✕</button></div>
+    <div class="modal__body"><div class="form-grid db-form" id="dbFields"></div><p class="field-error" id="dbFormError" hidden></p></div>
+    <div class="drawer__foot editor-foot">
+      <button type="button" class="link" id="dbDelete" hidden style="color:var(--red)">Delete row</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn btn--outline btn--sm" onclick="document.getElementById('dbModal').hidden=true">Cancel</button>
+      <button type="submit" class="btn btn--red btn--sm" id="dbSave">Save</button>
+    </div>
+  </form>
+</div>
+<div class="modal" id="orderModal" hidden><div class="modal__card"><div class="drawer__head"><h3 id="orderModalTitle"></h3><button class="icon-btn" id="closeOrderModal" aria-label="Close">✕</button></div><div class="modal__body" id="orderModalBody"></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/orders-data.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

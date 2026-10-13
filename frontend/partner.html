@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talk to sales — SPOCART Wholesale</title>
+  <meta name="description" content="Get a sealed bulk quote, set up a school kit program, tender support or become a SPOCART B2B partner." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="partner">
+<div id="siteHeader"></div>
+
+<main>
+  <div class="catalog__head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <span>Talk to sales</span></nav>
+      <div class="catalog__title">
+        <div><h1 id="pageTitle">Talk to SPOCART</h1><p class="orders__sub" id="pageSub">Tell us what you need — a real person replies within 2 working hours.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container cartpage__body">
+    <section class="cartpage__main">
+      <form class="panel" id="enquiryForm" novalidate>
+        <div class="field">
+          <span>What is this about?</span>
+          <div class="topic-grid" id="topicGrid">
+            <label><input type="radio" name="topic" value="quote" /><span><svg class="ic"><use href="#i-quote"/></svg> Bulk quote</span></label>
+            <label><input type="radio" name="topic" value="school" /><span><svg class="ic"><use href="#i-school"/></svg> School kit program</span></label>
+            <label><input type="radio" name="topic" value="tender" /><span><svg class="ic"><use href="#i-receipt"/></svg> Tender support</span></label>
+            <label><input type="radio" name="topic" value="partner" /><span><svg class="ic"><use href="#i-store"/></svg> Become a partner</span></label>
+            <label><input type="radio" name="topic" value="service" /><span><svg class="ic"><use href="#i-tool"/></svg> Sports service</span></label>
+            <label><input type="radio" name="topic" value="support" /><span><svg class="ic"><use href="#i-headset"/></svg> Order support</span></label>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Your name</span><input name="name" required autocomplete="name" /></label>
+          <label class="field"><span>Business / school</span><input name="business" required autocomplete="organization" /></label>
+          <label class="field"><span>Mobile</span><div class="phone-input"><b>+91</b><input name="mobile" type="tel" inputmode="numeric" maxlength="10" required autocomplete="tel-national" /></div></label>
+          <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" /></label>
+          <label class="field"><span>City</span><input name="city" autocomplete="address-level2" /></label>
+          <label class="field"><span>Approx. monthly volume</span><select name="volume"><option value="">Select</option><option>Under ₹50,000</option><option>₹50,000 – ₹2 lakh</option><option>₹2 – 10 lakh</option><option>₹10 lakh+</option><option>One-time / tender</option></select></label>
+          <label class="field span-2"><span id="messageLabel">Your requirement</span><textarea name="message" rows="5" placeholder="List products, quantities, sizes and any deadline…" required></textarea></label>
+          <label class="field span-2 file-field"><span>Attach BOQ / tender document <em>(optional — PDF, Excel, up to 10 MB)</em></span><input type="file" name="file" accept=".pdf,.xlsx,.xls,.csv,.doc,.docx" /></label>
+        </div>
+        <p class="field-error" id="enquiryError" hidden></p>
+        <div class="form-actions">
+          <a href="index.html" class="btn btn--outline btn--sm">Cancel</a>
+          <button type="submit" class="btn btn--red" id="submitEnquiry">Send request <svg class="ic"><use href="#i-arrow"/></svg></button>
+        </div>
+      </form>
+
+      <div class="panel enquiry-done" id="enquiryDone" hidden>
+        <span class="order-banner__icon"><svg class="ic"><use href="#i-check-circle"/></svg></span>
+        <h2>Request received</h2>
+        <p id="doneText"></p>
+        <div class="help-card__actions">
+          <a href="catalog.html" class="btn btn--dark btn--sm">Browse catalog</a>
+          <a href="index.html" class="btn btn--outline btn--sm">Back to home</a>
+        </div>
+      </div>
+    </section>
+
+    <aside class="summary">
+      <div class="summary__card">
+        <h3>Reach us directly</h3>
+        <ul class="assurance contact-list">
+          <li><svg class="ic"><use href="#i-phone"/></svg> <a href="tel:+917061911575">+91 70619 11575</a></li>
+          <li><svg class="ic"><use href="#i-whatsapp"/></svg> <a href="https://wa.me/917061911575" target="_blank" rel="noopener">WhatsApp sales desk</a></li>
+          <li><svg class="ic"><use href="#i-quote"/></svg> <a href="mailto:sales@spocart.in">sales@spocart.in</a></li>
+          <li><svg class="ic"><use href="#i-clock"/></svg> Mon–Sat, 10:00 am – 7:00 pm IST</li>
+          <li><svg class="ic"><use href="#i-pin"/></svg> Warehouses: Delhi • Mumbai • Chennai</li>
+        </ul>
+        <div class="tender-card">
+          <svg class="ic"><use href="#i-layers"/></svg>
+          <strong>Already know what you need?</strong>
+          <p>Add items to your cart and hit "Get a sealed quote" — we price the whole list at once.</p>
+          <a href="catalog.html" class="btn btn--red btn--block">Open bulk catalog</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/partner.js"></script>
+</body>
+</html>

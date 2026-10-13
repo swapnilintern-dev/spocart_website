@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My orders — SPOCART Wholesale</title>
+  <meta name="description" content="Track your SPOCART bulk orders, pay pending orders, download GST invoices and reorder in one click." />
+  <link rel="icon" href="assets/brand/logo_dark.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body data-page="orders">
+
+<div id="siteHeader"></div>
+
+<main class="orders">
+  <!-- ===================== PAGE HEAD ===================== -->
+  <div class="catalog__head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="account.html">Account</a> / <span>My orders</span></nav>
+      <div class="catalog__title">
+        <div>
+          <h1>My orders</h1>
+          <p class="orders__sub">Track deliveries, pay pending orders, download GST invoices and reorder in one tap.</p>
+        </div>
+        <div class="orders__stats" id="orderStats"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container orders__body">
+    <!-- ===================== NEW ORDER BANNER ===================== -->
+    <div class="order-banner" id="newOrderBanner" hidden>
+      <span class="order-banner__icon"><svg class="ic"><use href="#i-check-circle"/></svg></span>
+      <div><strong>Order placed!</strong><span id="newOrderText"></span></div>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="orders__controls">
+      <div class="seg-tabs seg-tabs--scroll" id="statusTabs" role="tablist"></div>
+      <label class="orders__search">
+        <svg class="ic"><use href="#i-search"/></svg>
+        <input type="search" id="orderSearch" placeholder="Search order ID or product…" autocomplete="off" />
+      </label>
+    </div>
+
+    <!-- ===================== ORDER LIST ===================== -->
+    <div class="order-list" id="orderList"></div>
+
+    <div class="empty-orders" id="ordersEmpty" hidden>
+      <svg class="ic"><use href="#i-box"/></svg>
+      <h3 id="emptyTitle">No orders here yet</h3>
+      <p id="emptyText">Bulk orders you place will show up here with live tracking.</p>
+      <a href="catalog.html" class="btn btn--red">Browse bulk catalog</a>
+    </div>
+
+    <!-- ===================== HELP ===================== -->
+    <aside class="help-card">
+      <div>
+        <strong>Need help with an order?</strong>
+        <span>Your dedicated manager is available Mon–Sat, 10 am – 7 pm IST.</span>
+      </div>
+      <div class="help-card__actions">
+        <a href="https://wa.me/917061911575" target="_blank" rel="noopener" class="btn btn--outline btn--sm"><svg class="ic"><use href="#i-whatsapp"/></svg> WhatsApp</a>
+        <a href="tel:+917061911575" class="btn btn--dark btn--sm"><svg class="ic"><use href="#i-phone"/></svg> +91 70619 11575</a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="siteFooter"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/orders-data.js"></script>
+<script src="js/orders.js"></script>
+</body>
+</html>
