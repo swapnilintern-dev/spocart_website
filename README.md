@@ -31,3 +31,4 @@ Backend tests: `cd backend/spocart-api && npm test`.
   `https://spocart-api.onrender.com/api/v1` automatically when not on localhost.
 
 See `frontend/README.md` (pages, API map) and `backend/spocart-api/README.md` (endpoints, admin DB console).
+# spocart_website
