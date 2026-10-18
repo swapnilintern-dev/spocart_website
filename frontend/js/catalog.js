@@ -96,7 +96,7 @@ function renderBrandList() {
     .filter((b) => !q || b.toLowerCase().includes(q))
     .map((b) => {
       const n = inScope.filter((p) => p.brand === b).length;
-      return `<label class="check ${n ? '' : 'is-muted'}"><input type="checkbox" value="${b}" ${f.brands.has(b) ? 'checked' : ''} /><i>${icon('i-check')}</i><span>${b}</span><em>${n}</em></label>`;
+      return `<label class="check ${n ? '' : 'is-muted'}"><input type="checkbox" value="${b}" ${f.brands.has(b) ? 'checked' : ''} /><i>${icon('i-check')}</i>${brandLogo(b, 'brand-logo--sm')}<span>${b}</span><em>${n}</em></label>`;
     }).join('') || '<p class="filter-note">No brand matches.</p>';
 }
 
@@ -142,13 +142,13 @@ function renderGrid(list) {
     groups.innerHTML = byBrand.map(([b, ps]) => `
       <section class="brand-group" id="brand-${b.replace(/\s+/g, '-').toLowerCase()}">
         <header class="brand-group__head">
-          <h3><span class="brand-mark">${b.slice(0, 2).toUpperCase()}</span> ${b} <small>${ps.length} product${ps.length > 1 ? 's' : ''}</small></h3>
+          <h3>${brandLogo(b)} ${b} <small>${ps.length} product${ps.length > 1 ? 's' : ''}</small></h3>
           ${f.brands.size === 1 && f.brands.has(b) ? '' : `<button class="link" data-only-brand="${b}">Only ${b}</button>`}
         </header>
         <div class="product-grid product-grid--3 ${f.view === 'list' ? 'is-list' : ''}">${ps.map((p) => productCard(p, { qty: f.slab })).join('')}</div>
       </section>`).join('');
     jump.hidden = byBrand.length < 2;
-    jump.innerHTML = `<span>Brands in view:</span>` + byBrand.map(([b, ps]) => `<a href="#brand-${b.replace(/\s+/g, '-').toLowerCase()}" class="chip-btn">${b} <em>${ps.length}</em></a>`).join('');
+    jump.innerHTML = `<span>Brands in view:</span>` + byBrand.map(([b, ps]) => `<a href="#brand-${b.replace(/\s+/g, '-').toLowerCase()}" class="chip-btn">${brandLogo(b, 'brand-logo--xs')}${b} <em>${ps.length}</em></a>`).join('');
     return list;
   }
   grid.hidden = false; groups.hidden = true; jump.hidden = true;

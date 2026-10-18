@@ -41,7 +41,7 @@ function renderLines(s) {
     <div class="cart-line" data-id="${key}">
       <a href="catalog.html?cat=${p.cat}"><img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='assets/images/footballs_stack.jpg'" /></a>
       <div class="cart-line__info">
-        <span class="product__brand">${p.brand}</span>
+        <span class="product__brand">${brandLogo(p.brand, 'brand-logo--xs')}${p.brand}</span>
         <strong>${p.name}${size ? ` <span class="tag tag--grey">Size ${size}</span>` : ''}</strong>
         <span class="cart-line__unit">${inr(unit)}/${p.unit} ${p.mrp ? `<s>${inr(p.mrp)}</s> <em class="tag tag--red">-${pct(p.mrp, unit)}%</em>` : ''}</span>
         ${slabHint(p, qty, key)}

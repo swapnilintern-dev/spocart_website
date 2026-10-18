@@ -400,10 +400,10 @@ function productCard(p, opts = {}) {
         <span class="tag tag--dark">${moqLabel}</span>
       </a>
       <div class="product__body">
-        <span class="product__brand">${p.brand}</span>
+        <span class="product__brand">${brandLogo(p.brand, 'brand-logo--xs')}${p.brand}</span>
         <h4 class="product__name">${p.name}</h4>
         ${p.desc ? `<p class="product__desc">${p.desc}</p>` : ''}
-        <div class="product__meta">${icon('i-star')} ${p.rating} (${p.reviews.toLocaleString('en-IN')}) • ${out ? '<span class="stock stock--out">Out of stock</span>' : `<span class="stock">${icon('i-check-circle')} In stock</span>`}</div>
+        <div class="product__meta">${p.reviews ? `${icon('i-star')} ${p.rating} (${p.reviews.toLocaleString('en-IN')}) • ` : ''}${out ? '<span class="stock stock--out">Out of stock</span>' : `<span class="stock">${icon('i-check-circle')} In stock</span>`}</div>
         <div class="product__price"><b>${inr(unit)}</b>${p.mrp ? `<s>${inr(p.mrp)}</s>` : ''}<small>/${p.unit}</small></div>
         <span class="product__slab">${showSlab ? `${showSlab[0]}+ ${plural(p)} • ` : (p.mrp ? 'Below MRP • ' : '')}GST invoice incl.${state.buyer === 'schools' && BUYER_TYPES.schools.multiplier < 1 ? ' • tender price' : ''}</span>
         ${p.sizes?.length ? `<label class="size-pick"><span>Size</span><select data-size-for="${p.id}" aria-label="Size">${p.sizes.map((s) => `<option>${s}</option>`).join('')}</select></label>` : ''}

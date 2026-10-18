@@ -22,7 +22,6 @@ function renderDeals() {
 function setDealFilter(filter) {
   dealFilter = filter;
   $$('#dealTabs button').forEach((b) => b.classList.toggle('is-active', b.dataset.filter === filter));
-  $$('.segment').forEach((s) => s.classList.toggle('is-active', s.dataset.audience === filter || (filter === 'all' && s.dataset.audience === 'shops')));
   renderDeals();
 }
 

@@ -30,6 +30,13 @@ const CATEGORIES = [
 // Brands carried by SPOCART, in display order.
 const BRANDS = ['Cosco', 'Nivia', 'Yonex', 'Li Ning', 'Vector X', 'Vicky', 'Nike', 'Adidas', 'Puma', 'USI', 'SF', 'SS', 'SG', 'Sega', 'Attack', 'Nxton', 'Techno Sports', 'Tynor', 'Shiv Naresh', 'EM', 'Stag', 'Amza', 'Tyka', 'Sparton', 'Flash', 'Alpha', 'Sixit', 'Reebok', 'Woods', 'Fenta', 'Gray Nicolls'];
 
+// Brand logos live in assets/brands/<slug>.jpg; brands without one fall back to initials.
+const BRAND_LOGOS = new Set(['cosco', 'nivia', 'yonex', 'li-ning', 'vector-x', 'vicky', 'nike', 'adidas', 'puma', 'usi', 'sf', 'ss', 'sg', 'sega', 'attack', 'nxton', 'techno-sports', 'tynor', 'shiv-naresh', 'em', 'stag', 'amza', 'tyka', 'sparton', 'flash', 'alpha', 'sixit', 'reebok', 'fenta']);
+const brandSlug = (b) => String(b).trim().toLowerCase().replace(/\s+/g, '-');
+const brandLogo = (b, cls = '') => BRAND_LOGOS.has(brandSlug(b))
+  ? `<img class="brand-logo ${cls}" src="assets/brands/${brandSlug(b)}.jpg" alt="${b}" loading="lazy" />`
+  : `<span class="brand-mark ${cls}">${String(b).slice(0, 2).toUpperCase()}</span>`;
+
 // slabs: [minQty, unitPrice] ascending. mrp = single-piece MRP.
 // deal: true → featured in "Best wholesale prices this week" on the home page.
 const IMG = {
@@ -37,8 +44,9 @@ const IMG = {
   dumbbell: 'assets/images/gym_dumbbells.jpg', gym: 'assets/images/gym_studio.jpg', fitness: 'assets/images/fitness_accessories.jpg',
   badminton: 'assets/images/hero_badminton.jpg', runners: 'assets/images/runners_group.jpg', tennis: 'assets/images/tennis_clay.jpg', swim: 'assets/images/swimmer.jpg',
 };
+// Each product's own photo lives at assets/products/<id>.jpg; `img` (a category photo) is the fallback.
 const P = (id, cat, brand, name, unit, moq, mrp, slabs, rating, reviews, stock, audience, deal, img) =>
-  ({ id, cat, brand, name, unit, moq, mrp, slabs, rating, reviews, stock, audience, deal, img });
+  ({ id, cat, brand, name, unit, moq, mrp, slabs, rating, reviews, stock, audience, deal, img: `assets/products/${id}.jpg`, fallbackImg: img });
 
 const PRODUCTS = [
   // Football
@@ -137,7 +145,7 @@ const pct = (mrp, price) => Math.round((1 - price / mrp) * 100);
 const byId = (id) => (typeof ALL_PRODUCTS !== 'undefined' ? ALL_PRODUCTS : PRODUCTS).find((p) => p.id === id);
 const catById = (id) => CATEGORIES.find((c) => c.id === id);
 const icon = (id, cls = 'ic') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
-const plural = (p, n = 2) => (n === 1 ? p.unit : p.unit === 'pc' ? 'pcs' : p.unit + 's');
+const plural = (p, n = 2) => (n === 1 ? p.unit : p.unit === 'pc' ? 'pcs' : /(s|x|ch|sh)$/.test(p.unit) ? p.unit + 'es' : p.unit + 's');
 
 /** Slab unit price for a product at a quantity, before buyer-type adjustment. */
 function slabPriceFor(product, qty) {
