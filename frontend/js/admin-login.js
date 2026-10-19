@@ -2,7 +2,8 @@
    SPOCART Wholesale — admin login (mobile + OTP, allow-listed numbers only)
    Standalone page: no customer header, so it mounts the icon sprite itself.
    ========================================================================== */
-CATALOG_READY.then(async () => {
+// Sign-in needs nothing from the catalogue, so it does not wait for it.
+Promise.resolve().then(async () => {
 if (Auth.isAdmin()) { location.replace('admin.html'); return; }
 
 mountSprite();

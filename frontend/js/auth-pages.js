@@ -1,7 +1,8 @@
 /* ==========================================================================
    SPOCART Wholesale — login & signup pages (mobile number + OTP)
    ========================================================================== */
-CATALOG_READY.then(async () => {
+// Sign-in needs nothing from the catalogue, so it does not wait for it.
+Promise.resolve().then(async () => {
 const { toast } = window.Spocart;
 const page = document.body.dataset.page;                // login | signup
 const next = Auth.nextUrl(page === 'login' ? 'account.html' : 'account.html');

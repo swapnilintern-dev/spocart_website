@@ -8,6 +8,10 @@
 
 const firstName = (s) => (s?.name || '').split(' ')[0];
 
+// Category links come from the API, so they are filled in again once it answers.
+const navCatLinks = () => CATEGORIES.filter((c) => c.home).map((c) => `<a href="catalog.html?cat=${c.id}" data-cat="${c.id}">${c.name}</a>`).join('');
+const mobileCatLinks = () => CATEGORIES.map((c) => `<a href="catalog.html?cat=${c.id}">${c.name}</a>`).join('');
+
 // No top strip: the phone and the For Shops / For Schools links are in the
 // footer, Login and Sign up are buttons in the header below, and Admin now
 // sits beside them.
@@ -39,7 +43,7 @@ const HEADER = (SESSION) => `
     <div class="container navbar__inner">
       <a class="navbar__all" href="catalog.html">${icon('i-menu')} All Categories</a>
       <nav class="navbar__links" id="mainNav">
-        ${CATEGORIES.filter((c) => c.home).map((c) => `<a href="catalog.html?cat=${c.id}" data-cat="${c.id}">${c.name}</a>`).join('')}
+        ${navCatLinks()}
         <a href="index.html#services">Services</a>
         <a href="index.html#deals" class="navbar__hot">Bulk Deals <span class="tag tag--red">HOT</span></a>
       </nav>
@@ -125,9 +129,7 @@ const FOOTER = (SESSION) => `
     <hr>
     <details class="mobile-nav__group">
       <summary>Shop by sport <em>${CATEGORIES.length}</em></summary>
-      <div class="mobile-nav__sub">
-        ${CATEGORIES.map((c) => `<a href="catalog.html?cat=${c.id}">${c.name}</a>`).join('')}
-      </div>
+      <div class="mobile-nav__sub">${mobileCatLinks()}</div>
     </details>
     <hr>
     <a href="catalog.html">All products</a>
@@ -416,18 +418,17 @@ function productCard(p, opts = {}) {
 }
 
 // ---------- boot ----------
+// The header, footer, Login / Sign up and Admin buttons need nothing from the
+// API, so they are drawn the moment the page loads. Waiting for the catalogue
+// left the page without them for as long as the server took to wake up.
 function mountLayout() {
   mountSprite();
   const SESSION = Auth.session();
-  $('#siteHeader').outerHTML = apiBanner() + HEADER(SESSION);
+  $('#siteHeader').outerHTML = HEADER(SESSION);
   $('#siteFooter').outerHTML = FOOTER(SESSION);
 
   const page = document.body.dataset.page;
   const params = new URLSearchParams(location.search);
-  $$('#mainNav a').forEach((a) => {
-    const isCat = a.dataset.cat && page === 'catalog' && params.get('cat') === a.dataset.cat;
-    a.classList.toggle('is-active', !!isCat);
-  });
   if (params.get('q')) $('#searchInput').value = params.get('q');
   $('#ordersBtn').classList.toggle('is-active', page === 'orders');
   $('#accountBtn')?.classList.toggle('is-active', page === 'account');
@@ -509,6 +510,23 @@ function mountLayout() {
   $('#mobileMenuBtn').addEventListener('click', () => openDrawer('#mobileMenu'));
   $('#closeMenu').addEventListener('click', closeDrawers);
 
+  // Badge from the stored cart straight away; prices need the catalogue.
+  const stored = Object.values(state.cart).reduce((n, q) => n + q, 0);
+  $('#cartCount').textContent = stored > 999 ? '999+' : stored;
+}
+
+/** Everything in the layout that depends on the catalogue, once it has loaded. */
+function fillLayoutFromCatalog() {
+  $('.header').insertAdjacentHTML('beforebegin', apiBanner());
+  $$('#mainNav a[data-cat]').forEach((a) => a.remove());
+  $('#mainNav').insertAdjacentHTML('afterbegin', navCatLinks());
+  $('.mobile-nav__group summary em').textContent = CATEGORIES.length;
+  $('.mobile-nav__sub').innerHTML = mobileCatLinks();
+
+  const params = new URLSearchParams(location.search);
+  $$('#mainNav a[data-cat]').forEach((a) => {
+    a.classList.toggle('is-active', document.body.dataset.page === 'catalog' && params.get('cat') === a.dataset.cat);
+  });
   renderCart();
 }
 
@@ -517,4 +535,5 @@ window.Spocart = {
   toggleQuote, addAllToQuote, quoteFromCart, openDrawer, closeDrawers, productCard, signOut,
   onChange: (fn) => listeners.push(fn),
 };
-CATALOG_READY.then(mountLayout);
+mountLayout();
+CATALOG_READY.then(fillLayoutFromCatalog);
