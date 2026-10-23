@@ -32,6 +32,7 @@
     <button data-view="orders"><svg class="ic"><use href="#i-box"/></svg> Orders <em id="navOrders"></em></button>
     <button data-view="enquiries"><svg class="ic"><use href="#i-headset"/></svg> Enquiries <em id="navEnquiries"></em></button>
     <button data-view="products"><svg class="ic"><use href="#i-layers"/></svg> Products &amp; stock <em id="navLow"></em></button>
+    <button data-view="import" id="navImport"><svg class="ic"><use href="#i-upload"/></svg> Bulk upload</button>
     <button data-view="customers"><svg class="ic"><use href="#i-user"/></svg> Customers</button>
     <button data-view="alerts"><svg class="ic"><use href="#i-clock"/></svg> Stock alerts <em id="navAlerts"></em></button>
     <button data-view="database" id="navDb"><svg class="ic"><use href="#i-receipt"/></svg> Database</button>
@@ -142,6 +143,47 @@
       </div>
       <p class="filter-note">Flip <b>In stock</b> or <b>On deal</b> and it saves straight away. For anything else — price, name, image, MOQ — open <b>Edit</b>. Customers see every change immediately.</p>
       <div class="admin-card"><table class="admin-table admin-table--products" id="productsTable"></table></div>
+    </section>
+
+    <!-- ===== BULK UPLOAD ===== -->
+    <section class="admin-view" data-view="import" hidden>
+      <div class="admin-head">
+        <div><h1>Bulk upload</h1><span class="muted">One sheet, one row per product — details, price slabs, images and stock together.</span></div>
+        <div class="admin-tools">
+          <button class="btn btn--outline btn--sm" id="importTemplate"><svg class="ic"><use href="#i-download"/></svg> Download template</button>
+        </div>
+      </div>
+
+      <ol class="import-steps">
+        <li><b>Download the template</b> and hand it to whoever does the data entry. Its second sheet lists every category id and sub-category they are allowed to use, so they never have to guess.</li>
+        <li><b>One row is one product.</b> Re-using a product code updates that product instead of adding a duplicate — so a sheet can be corrected and uploaded again safely.</li>
+        <li><b>Check the sheet before importing.</b> Nothing is written unless the whole file is clean: one bad row and nothing at all changes.</li>
+      </ol>
+
+      <div class="admin-card">
+        <div class="import-drop" id="importDrop">
+          <svg class="ic import-drop__icon"><use href="#i-upload"/></svg>
+          <b>Drop the filled sheet here</b>
+          <span class="muted">or <button type="button" class="link" id="importPick">choose a file</button> — .xlsx or .csv, up to 2,000 rows</span>
+          <input type="file" id="importFile" accept=".xlsx,.csv" hidden />
+        </div>
+        <div class="import-file" id="importChosen" hidden>
+          <div class="import-file__name"><b id="importName"></b><small class="muted" id="importSize"></small></div>
+          <div class="import-file__actions">
+            <button class="btn btn--outline btn--sm" id="importCheck">Check sheet</button>
+            <button class="btn btn--red btn--sm" id="importRun" disabled>Import</button>
+            <button type="button" class="icon-btn" id="importClear" aria-label="Remove this file">&#10005;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-card" id="importResult" hidden>
+        <div class="admin-card__head"><h3 id="importResultTitle"></h3></div>
+        <p id="importMessage" class="import-message"></p>
+        <div class="import-stats" id="importStats"></div>
+        <table class="admin-table" id="importErrors" hidden></table>
+        <p class="filter-note" id="importErrorNote" hidden></p>
+      </div>
     </section>
 
     <!-- ===== CUSTOMERS ===== -->

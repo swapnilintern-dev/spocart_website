@@ -25,6 +25,25 @@ const Api = (() => {
     if (!res.ok || !json || json.ok !== true) throw new Error(json?.message || `Request failed (${res.status})`);
     return json.data;
   }
+  /**
+   * Keeps the raw Response. Two admin calls need it: the import template is a
+   * file, and the import's "this sheet has errors" answer is a 422 that still
+   * carries a result worth showing rather than an error to throw.
+   */
+  async function rawRequest(method, path, body) {
+    const headers = {};
+    if (token()) headers.Authorization = `Bearer ${token()}`;
+    let res;
+    try {
+      res = await fetch(CONFIG.API_BASE_URL + path, { method, headers, body });
+    } catch { throw new Error('Cannot reach the SPOCART server. Check your connection and try again.'); }
+    if (res.status === 401) {
+      if (document.body.dataset.page?.startsWith('admin')) localStorage.removeItem('spocart.admin'); else Auth.signOut();
+      throw new Error('Your session has expired. Please sign in again.');
+    }
+    return res;
+  }
+
   const get = (p, o) => request('GET', p, undefined, o);
   const post = (p, b, o) => request('POST', p, b, o);
   const put = (p, b, o) => request('PUT', p, b, o);
@@ -169,6 +188,27 @@ const Api = (() => {
     setStock: (id, inStock) => patch(`/admin/products/${id}/stock`, { inStock }),
     addCategory: (c) => post('/admin/categories', c),
     uploadCatalogImage: (file) => { const fd = new FormData(); fd.append('file', file); return request('POST', '/admin/uploads/catalog', fd, { raw: true }); },
+    // ── Bulk product import ─────────────────────────────────────────────────
+    /** The .xlsx template for the data-entry employee, as a blob to save. */
+    importTemplate: async () => {
+      const res = await rawRequest('GET', '/admin/products/import/template');
+      if (!res.ok) throw new Error(`Could not build the template (${res.status}). Try again in a moment.`);
+      return res.blob();
+    },
+    /**
+     * Uploads the filled sheet. With `dryRun` the server validates and reports
+     * without changing anything. A sheet with bad rows answers 422 whose body
+     * lists the row, column and problem — returned, not thrown, so the panel
+     * can show the list.
+     */
+    importProducts: async (file, { dryRun = false } = {}) => {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await rawRequest('POST', `/admin/products/import?dryRun=${dryRun}`, fd);
+      const json = await res.json().catch(() => null);
+      if (json?.ok === true && json.data) return json.data;
+      throw new Error(json?.message || `The upload failed (${res.status}).`);
+    },
     broadcast: (b) => post('/admin/broadcast', b),
   };
   const qs = (o) => { const p = new URLSearchParams(Object.entries(o).filter(([, v]) => v !== '' && v != null)); return p.toString() ? `?${p}` : ''; };

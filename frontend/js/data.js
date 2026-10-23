@@ -173,7 +173,13 @@ function save(key, value) {
 // filled from the server first. If the server is unreachable the built-in
 // sample catalogue stays and API_STATUS.error explains why.
 const API_STATUS = { live: false, error: null };
-const CATALOG_READY = (async () => {
+
+/**
+ * Pulls the catalogue from the server into the arrays above. Run once on load,
+ * and again by the admin panel after a bulk import so the new products appear
+ * without a page reload.
+ */
+async function refreshCatalog() {
   if (CONFIG.DEMO_MODE) return;
   try {
     const { categories, products } = await Api.loadCatalog();
@@ -188,10 +194,15 @@ const CATALOG_READY = (async () => {
     // The server charges the same tier price to every buyer type.
     Object.values(BUYER_TYPES).forEach((t) => { t.multiplier = 1; t.slabs = true; });
     API_STATUS.live = true;
+    API_STATUS.error = null;
   } catch (e) {
-    // Production: never show sample products — empty catalogue + banner instead.
     API_STATUS.error = e.message;
-    CATEGORIES.splice(0, CATEGORIES.length); PRODUCTS.splice(0, PRODUCTS.length); ALL_PRODUCTS.splice(0, ALL_PRODUCTS.length);
+    // First load: never show sample products — empty catalogue + banner instead.
+    // A later refresh leaves whatever is already on screen alone.
+    if (!API_STATUS.live) {
+      CATEGORIES.splice(0, CATEGORIES.length); PRODUCTS.splice(0, PRODUCTS.length); ALL_PRODUCTS.splice(0, ALL_PRODUCTS.length);
+    }
     console.warn('SPOCART API unavailable:', e.message);
   }
-})();
+}
+const CATALOG_READY = refreshCatalog();

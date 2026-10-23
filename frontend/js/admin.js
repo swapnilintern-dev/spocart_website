@@ -459,6 +459,96 @@ function renderAlerts() {
   $('#alertsTable').innerHTML = `<thead><tr><th>Product</th><th>Brand</th><th>Stock now</th><th></th></tr></thead><tbody>${ids.map((id) => { const p = byId(id); return p ? `<tr><td><b>${p.name}</b></td><td>${p.brand}</td><td>${p.stock}</td><td><button class="btn btn--dark btn--sm" data-goto="products">Restock</button></td></tr>` : ''; }).join('')}</tbody>`;
 }
 
+// ---------- bulk upload ----------
+// The sheet is validated on the server, so this screen only carries the file
+// there and shows what came back. "Check sheet" is a dry run: it reports what
+// would happen and changes nothing, and Import stays locked until a check has
+// passed for the file that is actually loaded. Nothing is ever half-imported —
+// one bad row and the server writes nothing at all.
+const IMPORT = { file: null, checked: false, busy: false };
+
+function renderImportFile() {
+  $('#importDrop').hidden = !!IMPORT.file;
+  $('#importChosen').hidden = !IMPORT.file;
+  if (!IMPORT.file) return;
+  $('#importName').textContent = IMPORT.file.name;
+  $('#importSize').textContent = `${Math.max(1, Math.round(IMPORT.file.size / 1024)).toLocaleString('en-IN')} KB`;
+  $('#importCheck').disabled = IMPORT.busy;
+  $('#importRun').disabled = IMPORT.busy || !IMPORT.checked;
+  $('#importRun').title = IMPORT.checked ? '' : 'Check the sheet first.';
+}
+
+function setImportFile(file) {
+  if (!file) return;
+  const ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+  if (ext !== '.xlsx' && ext !== '.csv') return toast('Upload the filled template as .xlsx or .csv.');
+  if (file.size > 10 * 1024 * 1024) return toast('That file is over 10 MB. Split the sheet and upload it in parts.');
+  IMPORT.file = file;
+  IMPORT.checked = false;
+  $('#importResult').hidden = true;
+  renderImportFile();
+}
+
+function clearImportFile({ keepResult = false } = {}) {
+  IMPORT.file = null;
+  IMPORT.checked = false;
+  $('#importFile').value = '';
+  if (!keepResult) $('#importResult').hidden = true;
+  renderImportFile();
+}
+
+/** What the server said: the counts, or every problem it found and where. */
+function renderImportResult(r, dryRun) {
+  const bad = r.ok === false;
+  $('#importResult').hidden = false;
+  $('#importResultTitle').textContent = bad ? 'The sheet needs fixing' : dryRun ? 'The sheet is ready' : 'Imported';
+  $('#importMessage').textContent = r.message || '';
+  $('#importStats').innerHTML = bad ? '' : [
+    ['Rows read', r.rows],
+    ['New products', r.created],
+    ['Updated', r.updated],
+  ].map(([label, value]) => `<div class="stat"><small>${label}</small><b>${value}</b></div>`).join('');
+
+  $('#importErrors').hidden = !bad;
+  $('#importErrorNote').hidden = !bad;
+  if (!bad) return;
+  $('#importErrors').innerHTML = `<thead><tr><th>Row</th><th>Column</th><th>What to fix</th></tr></thead><tbody>${
+    (r.errors || []).map((x) => `<tr><td>${x.line}</td><td><code>${x.column || '—'}</code></td><td class="wrap">${x.message}</td></tr>`).join('')}</tbody>`;
+  $('#importErrorNote').textContent = (r.errorCount || 0) > (r.errors || []).length
+    ? `Showing the first ${r.errors.length} of ${r.errorCount} problems. Nothing was imported — fix these in the sheet and upload it again.`
+    : 'Nothing was imported — fix these rows in the sheet and upload it again.';
+}
+
+async function sendImport(dryRun) {
+  if (!IMPORT.file || IMPORT.busy) return;
+  const btn = dryRun ? $('#importCheck') : $('#importRun');
+  const label = btn.textContent;
+  IMPORT.busy = true;
+  renderImportFile();
+  btn.textContent = dryRun ? 'Checking…' : 'Importing…';
+  try {
+    const r = await Api.admin.importProducts(IMPORT.file, { dryRun });
+    renderImportResult(r, dryRun);
+    IMPORT.checked = dryRun && r.ok !== false;
+    if (!dryRun && r.ok !== false) {
+      // The catalogue this panel is holding is now out of date.
+      await refreshCatalog();
+      render();
+      renderImportResult(r, dryRun);           // render() does not touch this card
+      clearImportFile({ keepResult: true });
+      toast(r.message);
+    } else if (dryRun && r.ok !== false) {
+      toast('Sheet checked — nothing has changed yet. Press Import to apply it.');
+    }
+  } catch (ex) {
+    toast(ex.message);
+  } finally {
+    IMPORT.busy = false;
+    btn.textContent = label;
+    renderImportFile();
+  }
+}
+
 // ---------- database console (API mode) ----------
 const DB = { tables: [], table: null, rows: [], total: 0, offset: 0, limit: 50, q: '', stats: {} };
 const dbApi = {
@@ -805,6 +895,35 @@ $('#broadcastForm')?.addEventListener('submit', async (e) => {
   try { const r = await Api.admin.broadcast({ type: fd.get('type'), title: String(fd.get('title')).trim(), body: String(fd.get('body')).trim() }); e.target.reset(); toast(`Sent to ${r.sent} buyer${r.sent === 1 ? '' : 's'}.`); }
   catch (ex) { toast(ex.message); }
 });
+// Bulk upload
+$('#importTemplate').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  const label = btn.innerHTML;
+  btn.disabled = true;
+  btn.textContent = 'Preparing…';
+  try {
+    const blob = await Api.admin.importTemplate();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'spocart-products-template.xlsx';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast('Template downloaded — hand it to whoever does the data entry.');
+  } catch (ex) { toast(ex.message); }
+  finally { btn.disabled = false; btn.innerHTML = label; }
+});
+$('#importPick').addEventListener('click', () => $('#importFile').click());
+$('#importDrop').addEventListener('click', (e) => { if (!e.target.closest('button')) $('#importFile').click(); });
+['dragenter', 'dragover'].forEach((t) => $('#importDrop').addEventListener(t, (e) => { e.preventDefault(); $('#importDrop').classList.add('is-over'); }));
+['dragleave', 'drop'].forEach((t) => $('#importDrop').addEventListener(t, (e) => { e.preventDefault(); $('#importDrop').classList.remove('is-over'); }));
+$('#importDrop').addEventListener('drop', (e) => setImportFile(e.dataTransfer?.files?.[0]));
+$('#importFile').addEventListener('change', (e) => setImportFile(e.target.files[0]));
+$('#importClear').addEventListener('click', () => clearImportFile());
+$('#importCheck').addEventListener('click', () => sendImport(true));
+$('#importRun').addEventListener('click', () => sendImport(false));
+renderImportFile();
+if (CONFIG.DEMO_MODE) $('#navImport').hidden = true;   // the import needs the live API
+
 $('#dbTable').addEventListener('change', (e) => { DB.table = e.target.value; DB.offset = 0; DB.q = ''; $('#dbSearch').value = ''; loadDbRows(); });
 $('#dbTabs').addEventListener('click', (e) => { const b = e.target.closest('[data-db-table]'); if (b) { DB.table = b.dataset.dbTable; DB.offset = 0; DB.q = ''; $('#dbSearch').value = ''; loadDbRows(); } });
 let dbTimer; $('#dbSearch').addEventListener('input', (e) => { clearTimeout(dbTimer); dbTimer = setTimeout(() => { DB.q = e.target.value.trim(); DB.offset = 0; loadDbRows(); }, 300); });
@@ -818,7 +937,7 @@ $('#dbModal').addEventListener('click', (e) => { if (e.target === e.currentTarge
 $('#dbExport').addEventListener('click', () => { const a2 = document.createElement('a'); a2.href = URL.createObjectURL(new Blob([JSON.stringify(DB.rows, null, 2)], { type: 'application/json' })); a2.download = `spocart-${DB.table}-${new Date().toISOString().slice(0, 10)}.json`; a2.click(); });
 if (CONFIG.DEMO_MODE) $('#navDb').hidden = true;
 
-const VIEWS = ['overview', 'orders', 'enquiries', 'products', 'customers', 'alerts', 'database'];
+const VIEWS = ['overview', 'analytics', 'orders', 'enquiries', 'products', 'import', 'customers', 'alerts', 'database'];
 const fromHash = () => { const v = location.hash.slice(1); goto(VIEWS.includes(v) ? v : 'overview'); };
 window.addEventListener('hashchange', fromHash);
 fromHash();
